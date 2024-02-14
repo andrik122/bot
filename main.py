@@ -172,40 +172,31 @@ def jacket_show(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_men')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_men')
+
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
         back_item = types.InlineKeyboardButton('◀️', callback_data='back_j')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='next_j')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['men']['jacket'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['men']['jacket'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['men']["jacket"][t]["description1"]
-        description2 = data["items"]['men']["jacket"][t]["description2"]
-        description3 = data["items"]['men']["jacket"][t]["description3"]
-        description4 = data["items"]['men']["jacket"][t]["description4"]
-        description5 = data["items"]['men']["jacket"][t]["description5"]
+        description = '\n'.join(data["items"]['men']["jacket"][t][f"description{i}"] for i in range(1, 6))
         old_price = data["items"]['men']["jacket"][t]["oldprice"]
         new_price = data["items"]['men']["jacket"][t]["newprice"]
         image_path = data["items"]['men']["jacket"][t]["image_path"]
 
-        if old_price == new_price:    
-            bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>' +
-                        f'\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}' +
-                        f'{new_price}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+        caption = f'<b>{t}</b>\n'
+        if old_price == new_price:
+            caption += f'{description}\n{new_price}'
         else:
-            bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
-    f.close()
-        
+            caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+
+        bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
+                       caption=caption,
+                       reply_markup=markup,
+                       parse_mode='HTML')
+
 @bot.callback_query_handler(func=lambda call: call.data in ['bp', 'np'])
 def pants_show(call):
     global current_index1
@@ -224,38 +215,30 @@ def pants_show(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_men')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_men')
-        back_item = types.InlineKeyboardButton('◀️', callback_data='back_j')
-        next_btn = types.InlineKeyboardButton('▶️', callback_data='next_j')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['men']['pants'][t]['url']}')
+
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+        back_item = types.InlineKeyboardButton('◀️', callback_data='bp')
+        next_btn = types.InlineKeyboardButton('▶️', callback_data='np')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['men']['pants'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['men']["pants"][t]["description1"]
-        description2 = data["items"]['men']["pants"][t]["description2"]
-        description3 = data["items"]['men']["pants"][t]["description3"]
-        description4 = data["items"]['men']["pants"][t]["description4"]
-        description5 = data["items"]['men']["pants"][t]["description5"]
+        description = '\n'.join(data["items"]['men']["pants"][t][f"description{i}"] for i in range(1, 6))
         old_price = data["items"]['men']["pants"][t]["oldprice"]
         new_price = data["items"]['men']["pants"][t]["newprice"]
         image_path = data["items"]['men']["pants"][t]["image_path"]
 
-        if old_price == new_price:    
-            bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>' +
-                        f'\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}' +
-                        f'{new_price}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+        caption = f'<b>{t}</b>\n'
+        if old_price == new_price:
+            caption += f'{description}\n{new_price}'
         else:
-            bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+            caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+
+        bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
+                       caption=caption,
+                       reply_markup=markup,
+                       parse_mode='HTML')
     f.close()
         
 @bot.callback_query_handler(func=lambda call: call.data in ['bac', 'nac'])
@@ -277,40 +260,31 @@ def accessories_men(call):
 
         markup = types.InlineKeyboardMarkup(row_width=3)
         
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_men')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_men')
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bac')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='nac')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['men']['accessories_men'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['men']['accessories_men'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
         description1 = data["items"]['men']["accessories_men"][t]["description1"]
-        # description2 = data["items"]['men']["accessories_men"][t]["description2"]
-        # description3 = data["items"]['men']["accessories_men"][t]["description3"]
-        # description4 = data["items"]['men']["accessories_men"][t]["description4"]
-        # description5 = data["items"]['men']["accessories_men"][t]["description5"]
         old_price = data["items"]['men']["accessories_men"][t]["oldprice"]
         new_price = data["items"]['men']["accessories_men"][t]["newprice"]
         image_path = data["items"]['men']["accessories_men"][t]["image_path"]
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>' +
-                        f'\n{description1}' +
-                        # f'\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}' +
-                        f'{new_price}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n{description1}{new_price}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}',
-                        # f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
     f.close()
+
 
 @bot.callback_query_handler(func=lambda call: call.data in ['bbb', 'bbn'])
 def big_bags(call):
@@ -331,11 +305,11 @@ def big_bags(call):
 
         markup = types.InlineKeyboardMarkup(row_width=3)
         
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_women')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_women')
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bbb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='bbn')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['women']['bags']['big.bags'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['bags']['big.bags'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
@@ -350,19 +324,16 @@ def big_bags(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
     f.close()
+
 
 @bot.callback_query_handler(func=lambda call: call.data in ['sbb', 'sbn'])
 def small_bags(call):
@@ -383,11 +354,11 @@ def small_bags(call):
 
         markup = types.InlineKeyboardMarkup(row_width=3)
         
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_women')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_women')
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='sbb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='sbn')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['women']['bags']['small.bags'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['bags']['small.bags'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
@@ -402,19 +373,16 @@ def small_bags(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
     f.close()
+
 
 @bot.callback_query_handler(func=lambda call: call.data in ['bb', 'bn'])
 def backpack(call):
@@ -435,11 +403,11 @@ def backpack(call):
 
         markup = types.InlineKeyboardMarkup(row_width=3)
         
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_women')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_women')
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='bn')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['women']['backpack'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['backpack'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
@@ -454,19 +422,16 @@ def backpack(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
     f.close()
+
 
 @bot.callback_query_handler(func=lambda call: call.data in ['awb', 'awn'])
 def accessories_women(call):
@@ -487,11 +452,11 @@ def accessories_women(call):
 
         markup = types.InlineKeyboardMarkup(row_width=3)
         
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_women')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_women')
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='awb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='awn')
-        url = types.InlineKeyboardButton('🛒', url=f'{data['items']['women']['accessories_women'][t]['url']}')
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['accessories_women'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
@@ -506,21 +471,16 @@ def accessories_women(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>' +
-                        f'\n{description1}' +
-                        # f'\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}' +
-                        f'{new_price}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n{description1}\n<b>₴{new_price}</b>',
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                        caption=f'<b>{t}</b>\n' +
-                        f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n' +
-                        f'{description1}',
-                        # f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                        reply_markup=markup,
-                        parse_mode='HTML')
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n{description1}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
     f.close()
+
 
 #------------------------------------------------------------------------------------------------------------------------------
 

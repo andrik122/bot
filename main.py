@@ -212,33 +212,38 @@ def pants_show(call):
         elif call.data == 'np':
             current_index1 = (current_index1 + 1) % len(item_list)
 
-        t = item_list[current_index1]
+        # Переконайтеся, що список не порожній, перш ніж отримувати елемент за індексом
+        if item_list:
+            t = item_list[current_index1]
 
-        markup = types.InlineKeyboardMarkup(row_width=3)
+            markup = types.InlineKeyboardMarkup(row_width=3)
 
-        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
-        back_item = types.InlineKeyboardButton('◀️', callback_data='bp')
-        next_btn = types.InlineKeyboardButton('▶️', callback_data='np')
-        url = types.InlineKeyboardButton('🛒', url=data['items']['men']['pants'][t]['url'])
-        markup.add(back_item, url, next_btn)
-        markup.add(back, home)
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            back_item = types.InlineKeyboardButton('◀️', callback_data='bp')
+            next_btn = types.InlineKeyboardButton('▶️', callback_data='np')
+            url = types.InlineKeyboardButton('🛒', url=data['items']['men']['pants'][t]['url'])
+            markup.add(back_item, url, next_btn)
+            markup.add(back, home)
 
-        description = '\n'.join(data["items"]['men']["pants"][t][f"description{i}"] for i in range(1, 6))
-        old_price = data["items"]['men']["pants"][t]["oldprice"]
-        new_price = data["items"]['men']["pants"][t]["newprice"]
-        image_path = data["items"]['men']["pants"][t]["image_path"]
+            description = '\n'.join(data["items"]['men']["pants"][t][f"description{i}"] for i in range(1, 6))
+            old_price = data["items"]['men']["pants"][t]["oldprice"]
+            new_price = data["items"]['men']["pants"][t]["newprice"]
+            image_path = data["items"]['men']["pants"][t]["image_path"]
 
-        caption = f'<b>{t}</b>\n'
-        if old_price == new_price:
-            caption += f'{description}\n{new_price}'
+            caption = f'<b>{t}</b>\n'
+            if old_price == new_price:
+                caption += f'{description}\n{new_price}'
+            else:
+                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+
+            bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
+                           caption=caption,
+                           reply_markup=markup,
+                           parse_mode='HTML')
         else:
-            caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+            bot.send_message(call.message.chat.id, "Список елементів порожній")
 
-        bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                       caption=caption,
-                       reply_markup=markup,
-                       parse_mode='HTML')
     f.close()
         
 @bot.callback_query_handler(func=lambda call: call.data in ['bac', 'nac'])

@@ -14,86 +14,98 @@ _answer = None
 current_index1 = 0
 current_index2 = 0
 
+
 def start_buttons() -> types.InlineKeyboardMarkup:
     """
     Це початкові кнопки, якщо треба детальне пояснення кнопок, що, як і куди працює, я поясню, або напишу тут
     """
     markup = types.InlineKeyboardMarkup(row_width=2)
-    women = types.InlineKeyboardButton('🙋‍♀️ Жіночі товари', callback_data = 'women')
-    men = types.InlineKeyboardButton('🙋‍♂️ Чоловічі товари', callback_data = 'men')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
+    women = types.InlineKeyboardButton('🙋‍♀️ Жіночі товари', callback_data='women')
+    men = types.InlineKeyboardButton('🙋‍♂️ Чоловічі товари', callback_data='men')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
     markup.add(women, men, help)
     return markup
 
-#функція, що поверає кнопки з жіночими товарами
+
+# функція, що поверає кнопки з жіночими товарами
 def women_goods(call) -> types.InlineKeyboardMarkup:
-    cht= call.message.chat.id
+    cht = call.message.chat.id
 
     markup = types.InlineKeyboardMarkup(row_width=2)
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    bags = types.InlineKeyboardButton('Сумки', callback_data = 'bags')
-    backpacks = types.InlineKeyboardButton('Рюкзаки', callback_data = 'backpacks')
-    accessories = types.InlineKeyboardButton('Аксесуари', callback_data = 'accessories_women')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
+    bags = types.InlineKeyboardButton('Сумки', callback_data='bags')
+    backpacks = types.InlineKeyboardButton('Рюкзаки', callback_data='backpacks')
+    accessories = types.InlineKeyboardButton('Аксесуари', callback_data='accessories_women')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
     markup.add(back, home, bags, backpacks)
     markup.add(accessories)
     markup.add(help)
 
-    return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=markup)
+    return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари',
+                                 reply_markup=markup)
 
-#функція, що поверає кнопки з чоловічими товарами
+
+# функція, що поверає кнопки з чоловічими товарами
 def men_goods() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    jacket = types.InlineKeyboardButton('Куртки', callback_data = 'jacket')
-    pants = types.InlineKeyboardButton('Штани', callback_data = 'pants')
-    accessories = types.InlineKeyboardButton('Аксесуари', callback_data = 'accessories_men')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
+    jacket = types.InlineKeyboardButton('Куртки', callback_data='jacket')
+    pants = types.InlineKeyboardButton('Штани', callback_data='pants')
+    accessories = types.InlineKeyboardButton('Аксесуари', callback_data='accessories_men')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
     markup.add(back, home, jacket, pants)
     markup.add(accessories)
     markup.add(help)
 
     return markup
 
-#функція, що поверає кнопки з сумками
+
+# функція, що поверає кнопки з сумками
 def bags() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_bags')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    big = types.InlineKeyboardButton('Вмісткі сумки', callback_data = 'big')
-    small = types.InlineKeyboardButton('Компактні сумки', callback_data = 'small')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_bags')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
+    big = types.InlineKeyboardButton('Вмісткі сумки', callback_data='big')
+    small = types.InlineKeyboardButton('Компактні сумки', callback_data='small')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
     markup.add(back, home, big, small)
     markup.add(help)
     return markup
 
+
 def help() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    q1 = types.InlineKeyboardButton('Питання 1', callback_data = 'q1')
-    q2 = types.InlineKeyboardButton('Питання 2', callback_data = 'q2')
-    q3 = types.InlineKeyboardButton('Питання 3', callback_data = 'q3')
-    q4 = types.InlineKeyboardButton('Питання 4', callback_data = 'q4')
-    help_specialist = types.InlineKeyboardButton('Отримати допомогу фахівця', callback_data = 'help_specialist')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
+    q1 = types.InlineKeyboardButton('Питання 1', callback_data='q1')
+    q2 = types.InlineKeyboardButton('Питання 2', callback_data='q2')
+    q3 = types.InlineKeyboardButton('Питання 3', callback_data='q3')
+    q4 = types.InlineKeyboardButton('Питання 4', callback_data='q4')
+    help_specialist = types.InlineKeyboardButton('Отримати допомогу фахівця', callback_data='help_specialist')
     markup.add(home)
     markup.add(q1, q2, q3, q4)
     markup.add(help_specialist)
     return markup
 
+
 def help_one_more() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    help = types.InlineKeyboardButton('❓ Спитатись ще', callback_data = 'help_specialist')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
+    help = types.InlineKeyboardButton('❓ Спитатись ще', callback_data='help_specialist')
     markup.add(home, help)
     return markup
+
 
 def q_handler(message: str) -> None:
     cht = message.chat.id
 
-    bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️', reply_markup=start_buttons())
-    bot.send_message(1001173176, f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>', parse_mode='HTML')
+    bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️',
+                     reply_markup=start_buttons())
+    bot.send_message(1001173176,
+                     f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>',
+                     parse_mode='HTML')
+
 
 def answer_handler(message: str) -> None:
     cht = message.chat.id
@@ -104,6 +116,7 @@ def answer_handler(message: str) -> None:
     msg = bot.send_message(cht, 'write answer:')
     bot.register_next_step_handler(msg, answer_send)
 
+
 def answer_send(message: str) -> None:
     cht = message.chat.id
     global _answer
@@ -112,10 +125,12 @@ def answer_send(message: str) -> None:
 
     try:
         bot.send_message(cht, f'Відповідь надіслано користувачу')
-        bot.send_message(_id, f'Вам надішла відповідь від менеджера:\n<b><i>{_answer}</i></b>', parse_mode='HTML', reply_markup=help_one_more())
+        bot.send_message(_id, f'Вам надішла відповідь від менеджера:\n<b><i>{_answer}</i></b>', parse_mode='HTML',
+                         reply_markup=help_one_more())
         # bot.send_message(_id, f'Щоб надіслати питання ще раз, скористайтесь кнопкою', reply_markup=help_one_more())
     except Exception as ex:
         bot.send_message(cht, f'Помилка\n{ex}')
+
 
 def send_discount(message: str) -> None:
     name_ = message.text
@@ -134,24 +149,25 @@ def send_discount(message: str) -> None:
     url = data["items"]['men']["jacket"][name_]["url"]
 
     markup = types.InlineKeyboardMarkup(row_width=3)
-        
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_btn_men')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home_btn_men')
+
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
     url = types.InlineKeyboardButton('🛒', url=f'{url}')
     markup.add(url)
     markup.add(back, home)
- 
+
     with open('users.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
         for i in data['chat_ids']:
             bot.send_photo(i, open(os.path.join(image_path), 'rb'),
-                                    caption=f'⚠️ <b>{name_}</b>\n' +
-                                    f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
-                                    f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                                    reply_markup=markup,
-                                    parse_mode='HTML')
+                           caption=f'⚠️ <b>{name_}</b>\n' +
+                                   f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
+                                   f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           reply_markup=markup,
+                           parse_mode='HTML')
 
-#------------------------------------------------------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------------------------------------------------------
 
 # Ця callback штука відповідає за вивід товарів
 @bot.callback_query_handler(func=lambda call: call.data in ['back_j', 'next_j'])
@@ -196,6 +212,7 @@ def jacket_show(call):
                        caption=caption,
                        reply_markup=markup,
                        parse_mode='HTML')
+
 
 @bot.callback_query_handler(func=lambda call: call.data in ['bp', 'np'])
 def pants_show(call):
@@ -245,7 +262,8 @@ def pants_show(call):
             bot.send_message(call.message.chat.id, "Список елементів порожній")
 
     f.close()
-        
+
+
 @bot.callback_query_handler(func=lambda call: call.data in ['bac', 'nac'])
 def accessories_men(call):
     global current_index1
@@ -264,7 +282,7 @@ def accessories_men(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
+
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bac')
@@ -278,7 +296,7 @@ def accessories_men(call):
         new_price = data["items"]['men']["accessories_men"][t]["newprice"]
         image_path = data["items"]['men']["accessories_men"][t]["image_path"]
 
-        if old_price == new_price:    
+        if old_price == new_price:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=f'<b>{t}</b>\n{description1}{new_price}',
                            reply_markup=markup,
@@ -309,7 +327,7 @@ def big_bags(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
+
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bbb')
@@ -327,7 +345,7 @@ def big_bags(call):
         new_price = data["items"]['women']['bags']["big.bags"][t]["newprice"]
         image_path = data["items"]['women']['bags']["big.bags"][t]["image_path"]
 
-        if old_price == new_price:    
+        if old_price == new_price:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
                            reply_markup=markup,
@@ -358,7 +376,7 @@ def small_bags(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
+
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='sbb')
@@ -376,7 +394,7 @@ def small_bags(call):
         new_price = data["items"]['women']['bags']["small.bags"][t]["newprice"]
         image_path = data["items"]['women']['bags']["small.bags"][t]["image_path"]
 
-        if old_price == new_price:    
+        if old_price == new_price:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
                            reply_markup=markup,
@@ -407,7 +425,7 @@ def backpack(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
+
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bb')
@@ -425,7 +443,7 @@ def backpack(call):
         new_price = data["items"]['women']["backpack"][t]["newprice"]
         image_path = data["items"]['women']["backpack"][t]["image_path"]
 
-        if old_price == new_price:    
+        if old_price == new_price:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
                            reply_markup=markup,
@@ -456,7 +474,7 @@ def accessories_women(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-        
+
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='awb')
@@ -474,7 +492,7 @@ def accessories_women(call):
         new_price = data["items"]['women']["accessories_women"][t]["newprice"]
         image_path = data["items"]['women']["accessories_women"][t]["image_path"]
 
-        if old_price == new_price:    
+        if old_price == new_price:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=f'<b>{t}</b>\n{description1}\n<b>₴{new_price}</b>',
                            reply_markup=markup,
@@ -487,7 +505,7 @@ def accessories_women(call):
     f.close()
 
 
-#------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------
 
 # обробник команди /start
 @bot.message_handler(commands=['start', 'goods_list'])
@@ -511,15 +529,17 @@ def start(message: str) -> None:
 
     bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
 
+
 @bot.message_handler(commands=['answer'])
 def answer(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 1001173176:
+    if cht != 163616716 or 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'id:')
         bot.register_next_step_handler(msg, answer_handler)
+
 
 @bot.message_handler(commands=['help'])
 def goods_list(message: str) -> None:
@@ -527,18 +547,20 @@ def goods_list(message: str) -> None:
 
     bot.send_message(cht, 'help', reply_markup=help())
 
+
 @bot.message_handler(commands=['send_discount'])
 def discount(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 1001173176:
+    if cht != 163616716 or 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'Товар:')
         bot.register_next_step_handler(msg, send_discount)
 
+
 # з цією штукою сам до кінця не розібрався( Воно треба для обробки інлайнових кнопок
-@bot.callback_query_handler(func = lambda call: True)
+@bot.callback_query_handler(func=lambda call: True)
 def callback(call):
     cht = call.message.chat.id
 
@@ -547,7 +569,8 @@ def callback(call):
         if call.data == 'women':
             women_goods(call=call)
         if call.data == 'men':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали чоловічі товари', reply_markup=men_goods())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали чоловічі товари',
+                                  reply_markup=men_goods())
         elif call.data == 'bags':
             bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Сумки:', reply_markup=bags())
         elif call.data == 'big':
@@ -566,7 +589,7 @@ def callback(call):
             pants_show(call)
         elif call.data == 'accessories_men':
             accessories_men(call)
-         
+
 
         elif call.data == 'back_btn_men':
             bot.send_message(cht, 'Ви обрали чоловічі товари', reply_markup=men_goods())
@@ -581,13 +604,17 @@ def callback(call):
 
 
         elif call.data == 'q1':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Перше питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Перше питання',
+                                  reply_markup=start_buttons())
         elif call.data == 'q2':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Друге питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Друге питання',
+                                  reply_markup=start_buttons())
         elif call.data == 'q3':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Третє питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Третє питання',
+                                  reply_markup=start_buttons())
         elif call.data == 'q4':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Четверте питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Четверте питання',
+                                  reply_markup=start_buttons())
         elif call.data == 'help_specialist':
             global phone
 
@@ -599,11 +626,14 @@ def callback(call):
 
         # Ці блоки elif відокремлені, бо тут ціла система повернень назад :)
         elif call.data == 'back':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
         elif call.data == 'back_bags':
             women_goods(call)
         elif call.data == 'home':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+
 
 # обробник тексту
 @bot.message_handler(content_types=['contact'])
@@ -618,5 +648,6 @@ def text(message):
         msg = bot.send_message(cht, 'Надішли питання', reply_markup=keyboard)
 
         bot.register_next_step_handler(msg, q_handler)
+
 
 bot.polling()

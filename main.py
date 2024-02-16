@@ -534,7 +534,7 @@ def start(message: str) -> None:
 def answer(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716 or 1001173176:
+    if cht != 163616716:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'id:')
@@ -552,7 +552,7 @@ def goods_list(message: str) -> None:
 def discount(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716 or 1001173176:
+    if cht != 163616716:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'Товар:')

@@ -102,7 +102,7 @@ def q_handler(message: str) -> None:
 
     bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️',
                      reply_markup=start_buttons())
-    bot.send_message(1001173176,
+    bot.send_message(163616716,
                      f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>',
                      parse_mode='HTML')
 

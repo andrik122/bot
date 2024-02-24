@@ -1,10 +1,20 @@
 import telebot
 from telebot import types
+import pymysql
 import os
 import json
-from config import TOKEN
+from config import TOKEN, HOST, USER, PASSWORD, PORT, DATABASE
 
 bot = telebot.TeleBot(TOKEN)
+
+connection = pymysql.connect(
+    host=HOST,
+    user=USER,
+    password=PASSWORD,
+    port=PORT,
+    database=DATABASE
+)
+cursor = connection.cursor()
 
 # Про анотації розписав у функції start
 
@@ -14,98 +24,87 @@ _answer = None
 current_index1 = 0
 current_index2 = 0
 
-
 def start_buttons() -> types.InlineKeyboardMarkup:
     """
     Це початкові кнопки, якщо треба детальне пояснення кнопок, що, як і куди працює, я поясню, або напишу тут
     """
     markup = types.InlineKeyboardMarkup(row_width=2)
-    women = types.InlineKeyboardButton('🙋‍♀️ Жіночі товари', callback_data='women')
-    men = types.InlineKeyboardButton('🙋‍♂️ Чоловічі товари', callback_data='men')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
+    women = types.InlineKeyboardButton('🙋‍♀️ Жіночі товари', callback_data = 'women')
+    men = types.InlineKeyboardButton('🙋‍♂️ Чоловічі товари', callback_data = 'men')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
     markup.add(women, men, help)
     return markup
 
-
-# функція, що поверає кнопки з жіночими товарами
-def women_goods(call) -> types.InlineKeyboardMarkup:
-    cht = call.message.chat.id
-
+#функція, що поверає кнопки з жіночими товарами
+def women_goods() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
     back = types.InlineKeyboardButton('◀️ Назад', callback_data='back')
     home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
-    bags = types.InlineKeyboardButton('Сумки', callback_data='bags')
+    # bags = types.InlineKeyboardButton('Сумки', callback_data='bags')
+    big = types.InlineKeyboardButton('Вмісткі сумки', callback_data = 'big')
+    small = types.InlineKeyboardButton('Компактні сумки', callback_data = 'small')
     backpacks = types.InlineKeyboardButton('Рюкзаки', callback_data='backpacks')
     accessories = types.InlineKeyboardButton('Аксесуари', callback_data='accessories_women')
     help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
-    markup.add(back, home, bags, backpacks)
-    markup.add(accessories)
+    markup.add(back, home, big, small, backpacks, accessories)
     markup.add(help)
+    return markup
 
-    return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари',
-                                 reply_markup=markup)
+    # return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=markup)
 
 
-# функція, що поверає кнопки з чоловічими товарами
+#функція, що поверає кнопки з чоловічими товарами
 def men_goods() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
-    jacket = types.InlineKeyboardButton('Куртки', callback_data='jacket')
-    pants = types.InlineKeyboardButton('Штани', callback_data='pants')
-    accessories = types.InlineKeyboardButton('Аксесуари', callback_data='accessories_men')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
+    jacket = types.InlineKeyboardButton('Куртки', callback_data = 'jacket')
+    pants = types.InlineKeyboardButton('Штани', callback_data = 'pants')
+    accessories = types.InlineKeyboardButton('Аксесуари', callback_data = 'accessories_men')
+    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
     markup.add(back, home, jacket, pants)
     markup.add(accessories)
     markup.add(help)
 
     return markup
 
-
-# функція, що поверає кнопки з сумками
-def bags() -> types.InlineKeyboardMarkup:
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_bags')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
-    big = types.InlineKeyboardButton('Вмісткі сумки', callback_data='big')
-    small = types.InlineKeyboardButton('Компактні сумки', callback_data='small')
-    help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data='help')
-    markup.add(back, home, big, small)
-    markup.add(help)
-    return markup
-
+#функція, що поверає кнопки з сумками
+# def bags() -> types.InlineKeyboardMarkup:
+#     markup = types.InlineKeyboardMarkup(row_width=2)
+#     back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'back_bags')
+#     home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
+#     big = types.InlineKeyboardButton('Вмісткі сумки', callback_data = 'big')
+#     small = types.InlineKeyboardButton('Компактні сумки', callback_data = 'small')
+#     help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
+#     markup.add(back, home, big, small)
+#     markup.add(help)
+#     return markup
 
 def help() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
-    q1 = types.InlineKeyboardButton('Питання 1', callback_data='q1')
-    q2 = types.InlineKeyboardButton('Питання 2', callback_data='q2')
-    q3 = types.InlineKeyboardButton('Питання 3', callback_data='q3')
-    q4 = types.InlineKeyboardButton('Питання 4', callback_data='q4')
-    help_specialist = types.InlineKeyboardButton('Отримати допомогу фахівця', callback_data='help_specialist')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
+    q1 = types.InlineKeyboardButton('Питання 1', callback_data = 'q1')
+    q2 = types.InlineKeyboardButton('Питання 2', callback_data = 'q2')
+    q3 = types.InlineKeyboardButton('Питання 3', callback_data = 'q3')
+    q4 = types.InlineKeyboardButton('Питання 4', callback_data = 'q4')
+    help_specialist = types.InlineKeyboardButton('Отримати допомогу фахівця', callback_data = 'help_specialist')
     markup.add(home)
     markup.add(q1, q2, q3, q4)
     markup.add(help_specialist)
     return markup
 
-
 def help_one_more() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home')
-    help = types.InlineKeyboardButton('❓ Спитатись ще', callback_data='help_specialist')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home2')
+    help = types.InlineKeyboardButton('❓ Спитатись ще', callback_data = 'help_specialist')
     markup.add(home, help)
     return markup
-
 
 def q_handler(message: str) -> None:
     cht = message.chat.id
 
-    bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️',
-                     reply_markup=start_buttons())
-    bot.send_message(163616716,
-                     f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>',
-                     parse_mode='HTML')
-
+    bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️', reply_markup=start_buttons())
+    bot.send_message(1001173176, f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>', parse_mode='HTML')
 
 def answer_handler(message: str) -> None:
     cht = message.chat.id
@@ -116,58 +115,204 @@ def answer_handler(message: str) -> None:
     msg = bot.send_message(cht, 'write answer:')
     bot.register_next_step_handler(msg, answer_send)
 
-
 def answer_send(message: str) -> None:
     cht = message.chat.id
     global _answer
 
-    _answer = message.text
+    if message.text:
+        _answer = message.text
+        try:
+            bot.send_message(cht, f'Відповідь надіслано користувачу')
+            bot.send_message(_id, f'Вам надішла відповідь від менеджера:\n<b><i>{_answer}</i></b>', parse_mode='HTML', reply_markup=help_one_more())
+        except Exception as ex:
+            bot.send_message(cht, f'Помилка\n{ex}')
+            
+    if message.photo:
+        if message.caption:
+            caption = message.caption
+        else:
+            caption = ''
+            
+        file_id = message.photo[-1].file_id
+        try:
+            bot.send_message(cht, f'Відповідь надіслано користувачу')
+            bot.send_message(_id, f'Вам надішла відповідь від менеджера:')
+            bot.send_photo(_id, file_id, caption=caption, reply_markup=help_one_more())
+        except Exception as ex:
+            bot.send_message(cht, f'Помилка надсилання фото\n{ex}')
 
-    try:
-        bot.send_message(cht, f'Відповідь надіслано користувачу')
-        bot.send_message(_id, f'Вам надішла відповідь від менеджера:\n<b><i>{_answer}</i></b>', parse_mode='HTML',
-                         reply_markup=help_one_more())
-        # bot.send_message(_id, f'Щоб надіслати питання ще раз, скористайтесь кнопкою', reply_markup=help_one_more())
-    except Exception as ex:
-        bot.send_message(cht, f'Помилка\n{ex}')
 
+def discount1(message):
+    cht = message.chat.id
 
-def send_discount(message: str) -> None:
-    name_ = message.text
+    if message.text == 'women':  
+        sex = 'women'
+        items = ''
+        with open('items.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for i in data['items'][sex]:
+                items += f'{i}\n'
+        msg = bot.send_message(cht, items)
+        bot.register_next_step_handler(msg, discount2, sex)
+    elif message.text == 'men': 
+        sex = 'men'
+        items = ''
+        with open('items.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for i in data['items'][sex]:
+                items += f'{i}\n'
+        msg = bot.send_message(cht, items)
+        bot.register_next_step_handler(msg, discount2, sex)
+    else:
+        msg = bot.send_message(cht, 'спробуй ще раз')
+        bot.register_next_step_handler(msg, discount1)
 
-    goods_items = open('items.json', 'r', encoding='utf-8')
-    data = json.load(goods_items)
+def discount2(message, sex):
+    cht = message.chat.id
+    group = message.text
 
-    description1 = data["items"]['men']["jacket"][name_]["description1"]
-    description2 = data["items"]['men']["jacket"][name_]["description2"]
-    description3 = data["items"]['men']["jacket"][name_]["description3"]
-    description4 = data["items"]['men']["jacket"][name_]["description4"]
-    description5 = data["items"]['men']["jacket"][name_]["description5"]
-    old_price = data["items"]['men']["jacket"][name_]["oldprice"]
-    new_price = data["items"]['men']["jacket"][name_]["newprice"]
-    image_path = data["items"]['men']["jacket"][name_]["image_path"]
-    url = data["items"]['men']["jacket"][name_]["url"]
+    if message.text: 
+        try: 
+            items = ''
+            with open('items.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                for i in data['items'][sex][group]:
+                    items += f'{i}\n'
+            msg = bot.send_message(cht, items)
+            bot.register_next_step_handler(msg, discount3, sex, group)
+        except Exception as ex:
+            msg = bot.send_message(cht, 'спробуй ще раз')
+            bot.register_next_step_handler(msg, discount2, sex)
+    else:
+        msg = bot.send_message(cht, 'спробуй ще раз')
+        bot.register_next_step_handler(msg, discount2, sex)
 
-    markup = types.InlineKeyboardMarkup(row_width=3)
+def discount3(message, sex, group):
+    cht = message.chat.id
+    item = message.text
 
-    back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
-    url = types.InlineKeyboardButton('🛒', url=f'{url}')
-    markup.add(url)
-    markup.add(back, home)
+    if message.text: 
+        try: 
+            items = ''
+            with open('items.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                for i in data['items'][sex][group][item]:
+                    items += f'{i}\n'
+            msg = bot.send_message(cht, 'Змінити текст? y/n')
+            bot.register_next_step_handler(msg, discount4, sex, group, item)
+        except Exception as ex:
+            msg = bot.send_message(cht, 'спробуй ще раз')
+            bot.register_next_step_handler(msg, discount3, sex)
+    else:
+        msg = bot.send_message(cht, 'спробуй ще раз')
+        bot.register_next_step_handler(msg, discount3, sex)
 
-    with open('users.json', 'r', encoding='utf-8') as f:
+def discount4(message, sex, group, item):
+    cht = message.chat.id
+
+    if message.text == 'y':
+        msg = bot.send_message(cht, 'Напиши власний текст')
+        bot.register_next_step_handler(msg, own_text, sex, group, item)
+    elif message.text == 'n':
+        with open('items.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            _data = data['items'][sex][group][item]
+
+            image_path = _data['image_path']
+            name_ = item
+            old_price = _data['oldprice']
+            new_price = _data['newprice']
+            description = _data['description']
+            url = _data['url']
+
+            markup = types.InlineKeyboardMarkup(row_width=3)
+            
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            url = types.InlineKeyboardButton('🛒', url=f'{url}')
+            markup.add(url)
+            markup.add(back, home)
+            
+            cursor.execute("SELECT chat_id FROM users")
+            ids = cursor.fetchall()
+            for i in ids:
+                bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
+                                                caption=f'<b>{name_}</b>\n' +
+                                                f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
+                                                f'{description}',
+                                                reply_markup=markup,
+                                                parse_mode='HTML')
+
+def own_text(message, sex, group, item):
+    cht = message.chat.id
+
+    with open('items.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-        for i in data['chat_ids']:
-            bot.send_photo(i, open(os.path.join(image_path), 'rb'),
-                           caption=f'⚠️ <b>{name_}</b>\n' +
-                                   f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
-                                   f'{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
-                           reply_markup=markup,
-                           parse_mode='HTML')
+        _data = data['items'][sex][group][item]
+
+        image_path = _data['image_path']
+        name_ = item
+        old_price = _data['oldprice']
+        new_price = _data['newprice']
+        description = _data['description']
+        url = _data['url']
+
+        markup = types.InlineKeyboardMarkup(row_width=3)
+            
+        back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+        home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+        url = types.InlineKeyboardButton('🛒', url=f'{url}')
+        markup.add(url)
+        markup.add(back, home)
+            
+        cursor.execute("SELECT chat_id FROM users")
+        ids = cursor.fetchall()
+        for i in ids:
+            bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
+                                            caption = f'{message.text}\n\n' +
+                                            f'<b>{name_}</b>\n' +
+                                            f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
+                                            f'{description}',
+                                            reply_markup=markup,
+                                            parse_mode='HTML')
+
+# def send_discount(message, sex, sub_group):
+#     cht = message.chat.id
+#     name_ = message.text
+
+#     try:
+#         goods_items = open('items.json', 'r', encoding='utf-8')
+#         data = json.load(goods_items)
+
+#         description = data["items"][sex][sub_group][name_]["description"]
+#         old_price = data["items"][sex][sub_group][name_]["oldprice"]
+#         new_price = data["items"][sex][sub_group][name_]["newprice"]
+#         image_path = data["items"][sex][sub_group][name_]["image_path"]
+#         url = data["items"][sex][sub_group][name_]["url"]
+
+#         markup = types.InlineKeyboardMarkup(row_width=3)
+            
+#         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
+#         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+#         url = types.InlineKeyboardButton('🛒', url=f'{url}')
+#         markup.add(url)
+#         markup.add(back, home)
+        
+#         cursor.execute("SELECT chat_id FROM users")
+#         data = cursor.fetchall()
+#         print(data)
+#         for i in data[0]:
+#             bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
+#                                         caption=f'⚠️ <b>{name_}</b>\n' +
+#                                         f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
+#                                         f'{description}',
+#                                         reply_markup=markup,
+#                                         parse_mode='HTML')
+#     except Exception as ex:
+#         bot.send_message(cht, 'Помилка! Погано введена група/підгрупа/товар')
 
 
-# ------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------
 
 # Ця callback штука відповідає за вивід товарів
 @bot.callback_query_handler(func=lambda call: call.data in ['back_j', 'next_j'])
@@ -197,7 +342,8 @@ def jacket_show(call):
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description = '\n'.join(data["items"]['men']["jacket"][t][f"description{i}"] for i in range(1, 6))
+        # description = '\n'.join(data["items"]['men']["jacket"][t][f"description{i}"] for i in range(1, 6))
+        description = data["items"]['men']["jacket"][t]["description"]
         old_price = data["items"]['men']["jacket"][t]["oldprice"]
         new_price = data["items"]['men']["jacket"][t]["newprice"]
         image_path = data["items"]['men']["jacket"][t]["image_path"]
@@ -212,7 +358,6 @@ def jacket_show(call):
                        caption=caption,
                        reply_markup=markup,
                        parse_mode='HTML')
-
 
 @bot.callback_query_handler(func=lambda call: call.data in ['bp', 'np'])
 def pants_show(call):
@@ -243,7 +388,7 @@ def pants_show(call):
             markup.add(back_item, url, next_btn)
             markup.add(back, home)
 
-            description = '\n'.join(data["items"]['men']["pants"][t][f"description{i}"] for i in range(1, 6))
+            description = data["items"]['men']["pants"][t]["description"]
             old_price = data["items"]['men']["pants"][t]["oldprice"]
             new_price = data["items"]['men']["pants"][t]["newprice"]
             image_path = data["items"]['men']["pants"][t]["image_path"]
@@ -262,8 +407,7 @@ def pants_show(call):
             bot.send_message(call.message.chat.id, "Список елементів порожній")
 
     f.close()
-
-
+        
 @bot.callback_query_handler(func=lambda call: call.data in ['bac', 'nac'])
 def accessories_men(call):
     global current_index1
@@ -282,7 +426,7 @@ def accessories_men(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-
+        
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bac')
@@ -291,19 +435,19 @@ def accessories_men(call):
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['men']["accessories_men"][t]["description1"]
+        description = data["items"]['men']["accessories_men"][t]["description"]
         old_price = data["items"]['men']["accessories_men"][t]["oldprice"]
         new_price = data["items"]['men']["accessories_men"][t]["newprice"]
         image_path = data["items"]['men']["accessories_men"][t]["image_path"]
 
-        if old_price == new_price:
+        if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n{description1}{new_price}',
+                           caption=f'<b>{t}</b>\n{description}{new_price}',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -315,7 +459,7 @@ def big_bags(call):
 
     with open('items.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-        item_list = list(data['items']['women']['bags']['big.bags'].keys())
+        item_list = list(data['items']['women']['big.bags'].keys())
 
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
@@ -327,32 +471,28 @@ def big_bags(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-
+        
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bbb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='bbn')
-        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['bags']['big.bags'][t]['url'])
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['big.bags'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['women']['bags']["big.bags"][t]["description1"]
-        description2 = data["items"]['women']['bags']["big.bags"][t]["description2"]
-        description3 = data["items"]['women']['bags']["big.bags"][t]["description3"]
-        description4 = data["items"]['women']['bags']["big.bags"][t]["description4"]
-        description5 = data["items"]['women']['bags']["big.bags"][t]["description5"]
-        old_price = data["items"]['women']['bags']["big.bags"][t]["oldprice"]
-        new_price = data["items"]['women']['bags']["big.bags"][t]["newprice"]
-        image_path = data["items"]['women']['bags']["big.bags"][t]["image_path"]
+        description = data["items"]['women']["big.bags"][t]["description"]
+        old_price = data["items"]['women']["big.bags"][t]["oldprice"]
+        new_price = data["items"]['women']["big.bags"][t]["newprice"]
+        image_path = data["items"]['women']["big.bags"][t]["image_path"]
 
-        if old_price == new_price:
+        if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -364,7 +504,7 @@ def small_bags(call):
 
     with open('items.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
-        item_list = list(data['items']['women']['bags']['small.bags'].keys())
+        item_list = list(data['items']['women']['small.bags'].keys())
 
         bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
 
@@ -376,32 +516,28 @@ def small_bags(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-
+        
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='sbb')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='sbn')
-        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['bags']['small.bags'][t]['url'])
+        url = types.InlineKeyboardButton('🛒', url=data['items']['women']['small.bags'][t]['url'])
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['women']['bags']["small.bags"][t]["description1"]
-        description2 = data["items"]['women']['bags']["small.bags"][t]["description2"]
-        description3 = data["items"]['women']['bags']["small.bags"][t]["description3"]
-        description4 = data["items"]['women']['bags']["small.bags"][t]["description4"]
-        description5 = data["items"]['women']['bags']["small.bags"][t]["description5"]
-        old_price = data["items"]['women']['bags']["small.bags"][t]["oldprice"]
-        new_price = data["items"]['women']['bags']["small.bags"][t]["newprice"]
-        image_path = data["items"]['women']['bags']["small.bags"][t]["image_path"]
+        description = data["items"]['women']["small.bags"][t]["description"]
+        old_price = data["items"]['women']["small.bags"][t]["oldprice"]
+        new_price = data["items"]['women']["small.bags"][t]["newprice"]
+        image_path = data["items"]['women']["small.bags"][t]["image_path"]
 
-        if old_price == new_price:
+        if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -425,7 +561,7 @@ def backpack(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-
+        
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bb')
@@ -434,23 +570,19 @@ def backpack(call):
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['women']["backpack"][t]["description1"]
-        description2 = data["items"]['women']["backpack"][t]["description2"]
-        description3 = data["items"]['women']["backpack"][t]["description3"]
-        description4 = data["items"]['women']["backpack"][t]["description4"]
-        description5 = data["items"]['women']["backpack"][t]["description5"]
+        description = data["items"]['women']["backpack"][t]["description"]
         old_price = data["items"]['women']["backpack"][t]["oldprice"]
         new_price = data["items"]['women']["backpack"][t]["newprice"]
         image_path = data["items"]['women']["backpack"][t]["image_path"]
 
-        if old_price == new_price:
+        if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description1}\n{description2}\n{description3}\n{description4}\n{description5}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -474,7 +606,7 @@ def accessories_women(call):
         t = item_list[current_index1]
 
         markup = types.InlineKeyboardMarkup(row_width=3)
-
+        
         back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
         back_item = types.InlineKeyboardButton('◀️', callback_data='awb')
@@ -483,29 +615,25 @@ def accessories_women(call):
         markup.add(back_item, url, next_btn)
         markup.add(back, home)
 
-        description1 = data["items"]['women']["accessories_women"][t]["description1"]
-        # description2 = data["items"]['women']["accessories_women"][t]["description2"]
-        # description3 = data["items"]['women']["accessories_women"][t]["description3"]
-        # description4 = data["items"]['women']["accessories_women"][t]["description4"]
-        # description5 = data["items"]['women']["accessories_women"][t]["description5"]
+        description = data["items"]['women']["accessories_women"][t]["description"]
         old_price = data["items"]['women']["accessories_women"][t]["oldprice"]
         new_price = data["items"]['women']["accessories_women"][t]["newprice"]
         image_path = data["items"]['women']["accessories_women"][t]["image_path"]
 
-        if old_price == new_price:
+        if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n{description1}\n<b>₴{new_price}</b>',
+                           caption=f'<b>{t}</b>\n{description}\n<b>₴{new_price}</b>',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n{description1}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n{description}',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
 
 
-# ------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------
 
 # обробник команди /start
 @bot.message_handler(commands=['start', 'goods_list'])
@@ -516,63 +644,63 @@ def start(message: str) -> None:
     """
     cht = message.chat.id
 
-    with open('users.json', 'r', encoding='utf-8') as f:
-        data = json.load(f)
+    cursor.execute("CREATE TABLE IF NOT EXISTS users (id int AUTO_INCREMENT, chat_id varchar(10), PRIMARY KEY(id))")
+    connection.commit()
+    cursor.execute("SELECT * FROM users WHERE chat_id = %s", (cht,))
+    existing_user = cursor.fetchone()
 
-    # Додаємо ідентифікатор, якщо він вже не існує у списку
-    if cht not in data["chat_ids"]:
-        data["chat_ids"].append(cht)
-
-    # Зберігаємо оновлені дані у файлі
-    with open('users.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False)
+    # Якщо запис не знайдено, то вставляємо новий запис
+    if not existing_user:
+        cursor.execute("INSERT INTO users (chat_id) VALUES (%s)", (cht,))
+        connection.commit()
 
     bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
-
 
 @bot.message_handler(commands=['answer'])
 def answer(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716:
+    if cht != 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'id:')
         bot.register_next_step_handler(msg, answer_handler)
 
-
 @bot.message_handler(commands=['help'])
 def goods_list(message: str) -> None:
     cht = message.chat.id
 
-    bot.send_message(cht, 'help', reply_markup=help())
-
+    bot.send_message(cht, 'Скористайтесь питаннями або задайте власне нашому менеджеру', reply_markup=help())
 
 @bot.message_handler(commands=['send_discount'])
-def discount(message: str) -> None:
+def discount_(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716:
+    if cht != 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
-        msg = bot.send_message(cht, 'Товар:')
-        bot.register_next_step_handler(msg, send_discount)
+        items = ''
+        with open('items.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for i in data['items']:
+                items += f'{i}\n'
+        msg = bot.send_message(cht, items)
+        bot.register_next_step_handler(msg, discount1)
 
 
 # з цією штукою сам до кінця не розібрався( Воно треба для обробки інлайнових кнопок
-@bot.callback_query_handler(func=lambda call: True)
+@bot.callback_query_handler(func = lambda call: True)
 def callback(call):
     cht = call.message.chat.id
 
     # тут ми перевіряємо, на яку кнопку тицьнув користувач
     if call.message:
         if call.data == 'women':
-            women_goods(call=call)
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=women_goods())
         if call.data == 'men':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали чоловічі товари',
-                                  reply_markup=men_goods())
-        elif call.data == 'bags':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Сумки:', reply_markup=bags())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали чоловічі товари', reply_markup=men_goods())
+        # elif call.data == 'bags':
+        #     bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Сумки:', reply_markup=bags())
         elif call.data == 'big':
             big_bags(call)
         elif call.data == 'small':
@@ -589,14 +717,20 @@ def callback(call):
             pants_show(call)
         elif call.data == 'accessories_men':
             accessories_men(call)
-
+         
 
         elif call.data == 'back_btn_men':
             bot.send_message(cht, 'Ви обрали чоловічі товари', reply_markup=men_goods())
         elif call.data == 'home_btn_men':
             bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
         elif call.data == 'back_btn_women':
-            bot.send_message(cht, 'Сумки:', reply_markup=bags())
+            bot.send_message(cht, 'Ви обрали жіночі товари', reply_markup=women_goods())
+
+        # elif call.data == 'back_btn_women':
+        #     bot.send_message(cht, 'Сумки:', reply_markup=bags())
+        #     women_goods(call=call)
+        # elif call.data == 'back_btn_women':
+        #     women_goods(call=call)
         elif call.data == 'home_btn_women':
             bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
 
@@ -604,37 +738,31 @@ def callback(call):
 
 
         elif call.data == 'q1':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Перше питання',
-                                  reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Перше питання', reply_markup=start_buttons())
         elif call.data == 'q2':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Друге питання',
-                                  reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Друге питання', reply_markup=start_buttons())
         elif call.data == 'q3':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Третє питання',
-                                  reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Третє питання', reply_markup=start_buttons())
         elif call.data == 'q4':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Четверте питання',
-                                  reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Четверте питання', reply_markup=start_buttons())
         elif call.data == 'help_specialist':
             global phone
 
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
             phone = types.KeyboardButton('Надіслати контакт', request_contact=True)
             markup.add(phone)
-            bot.send_message(cht, 'Надішли контакт', reply_markup=markup)
+            bot.send_message(cht, 'Надішліть контакт', reply_markup=markup)
 
 
         # Ці блоки elif відокремлені, бо тут ціла система повернень назад :)
         elif call.data == 'back':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
-                                  text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
         elif call.data == 'back_bags':
-            women_goods(call)
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=women_goods())
         elif call.data == 'home':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
-                                  text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
-
-
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+        elif call.data == 'home2':
+            bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
 # обробник тексту
 @bot.message_handler(content_types=['contact'])
 def text(message):
@@ -645,9 +773,8 @@ def text(message):
         phone = message.contact.phone_number
 
         keyboard = types.ReplyKeyboardRemove()
-        msg = bot.send_message(cht, 'Надішли питання', reply_markup=keyboard)
+        msg = bot.send_message(cht, 'Поставте питання', reply_markup=keyboard)
 
         bot.register_next_step_handler(msg, q_handler)
-
 
 bot.polling()

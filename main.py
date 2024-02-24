@@ -710,7 +710,7 @@ def callback(call):
         elif call.data == 'accessories_women':
             accessories_women(call)
         elif call.data == 'help':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='help', reply_markup=help())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Скористайтесь питаннями або задайте власне нашому менеджеру', reply_markup=help())
         elif call.data == 'jacket':
             jacket_show(call)
         elif call.data == 'pants':

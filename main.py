@@ -438,8 +438,8 @@ def accessories_men(call):
         home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
         back_item = types.InlineKeyboardButton('◀️', callback_data='bac')
         next_btn = types.InlineKeyboardButton('▶️', callback_data='nac')
-        url = types.InlineKeyboardButton('🛒', url=data['items']['men']['accessories_men'][t]['url'])
-        markup.add(back_item, url, next_btn)
+        url_button = types.InlineKeyboardButton('🛒', url=data['items']['men']['accessories_men'][t]['url'])
+        markup.add(back_item, url_button, next_btn)
         markup.add(back, home)
 
         description = data["items"]['men']["accessories_men"][t]["description"]

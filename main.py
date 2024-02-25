@@ -111,7 +111,7 @@ def q_handler(message: str) -> None:
     cht = message.chat.id
 
     bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️', reply_markup=start_buttons())
-    bot.send_message(1001173176, f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>', parse_mode='HTML')
+    bot.send_message(163616716, f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>', parse_mode='HTML')
 
 def answer_handler(message: str) -> None:
     cht = message.chat.id
@@ -682,7 +682,7 @@ def start(message: str) -> None:
 def answer(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 1001173176:
+    if cht != 163616716:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         msg = bot.send_message(cht, 'id:')
@@ -698,7 +698,7 @@ def goods_list(message: str) -> None:
 def discount_(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 1001173176:
+    if cht != 163616716:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування команди')
     else:
         items = ''

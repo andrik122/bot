@@ -119,7 +119,7 @@ def answer_handler(message: str) -> None:
 
     _id = message.text
 
-    msg = bot.send_message(cht, 'write answer:')
+    msg = bot.send_message(cht, 'write answer/send photo:')
     bot.register_next_step_handler(msg, answer_send)
 
 def answer_send(message: str) -> None:

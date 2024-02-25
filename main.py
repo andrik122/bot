@@ -29,10 +29,17 @@ def start_buttons() -> types.InlineKeyboardMarkup:
     Це початкові кнопки, якщо треба детальне пояснення кнопок, що, як і куди працює, я поясню, або напишу тут
     """
     markup = types.InlineKeyboardMarkup(row_width=2)
-    women = types.InlineKeyboardButton('🙋‍♀️ Жіночі товари', callback_data = 'women')
-    men = types.InlineKeyboardButton('🙋‍♂️ Чоловічі товари', callback_data = 'men')
+    women = types.InlineKeyboardButton('🙋🏻‍♀️ Жіночі товари', callback_data = 'women')
+    men = types.InlineKeyboardButton('🙋🏻‍♂️ Чоловічі товари', callback_data = 'men')
     help = types.InlineKeyboardButton('🛟 Отримати допомогу', callback_data = 'help')
     markup.add(women, men, help)
+    return markup
+
+def help_buttonts() -> types.InlineKeyboardMarkup:
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    back = types.InlineKeyboardButton('◀️ Назад', callback_data = 'help_back')
+    home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'help_home')
+    markup.add(back, home)
     return markup
 
 #функція, що поверає кнопки з жіночими товарами
@@ -50,7 +57,7 @@ def women_goods() -> types.InlineKeyboardMarkup:
     markup.add(help)
     return markup
 
-    # return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=markup)
+    # return bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вами було обрано «🙋🏻‍♀️Жіночі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=markup)
 
 
 #функція, що поверає кнопки з чоловічими товарами
@@ -83,10 +90,10 @@ def men_goods() -> types.InlineKeyboardMarkup:
 def help() -> types.InlineKeyboardMarkup:
     markup = types.InlineKeyboardMarkup(row_width=2)
     home = types.InlineKeyboardButton('⏪ Головне меню', callback_data = 'home')
-    q1 = types.InlineKeyboardButton('Питання 1', callback_data = 'q1')
-    q2 = types.InlineKeyboardButton('Питання 2', callback_data = 'q2')
-    q3 = types.InlineKeyboardButton('Питання 3', callback_data = 'q3')
-    q4 = types.InlineKeyboardButton('Питання 4', callback_data = 'q4')
+    q1 = types.InlineKeyboardButton('Як замовити?', callback_data = 'q1')
+    q2 = types.InlineKeyboardButton('Коли та як оплатити за товар?', callback_data = 'q2')
+    q3 = types.InlineKeyboardButton('Який час доставки товару?', callback_data = 'q3')
+    q4 = types.InlineKeyboardButton('Обмін/Повернення товару', callback_data = 'q4')
     help_specialist = types.InlineKeyboardButton('Отримати допомогу фахівця', callback_data = 'help_specialist')
     markup.add(home)
     markup.add(q1, q2, q3, q4)
@@ -654,7 +661,7 @@ def start(message: str) -> None:
         cursor.execute("INSERT INTO users (chat_id) VALUES (%s)", (cht,))
         connection.commit()
 
-    bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+    bot.send_message(cht, 'Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
 
 @bot.message_handler(commands=['answer'])
 def answer(message: str) -> None:
@@ -696,9 +703,9 @@ def callback(call):
     # тут ми перевіряємо, на яку кнопку тицьнув користувач
     if call.message:
         if call.data == 'women':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=women_goods())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вами було обрано «🙋🏻‍♀️Жіночі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=women_goods())
         if call.data == 'men':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали чоловічі товари', reply_markup=men_goods())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вами було обрано «🙋🏻‍♂️Чоловічі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=men_goods())
         # elif call.data == 'bags':
         #     bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Сумки:', reply_markup=bags())
         elif call.data == 'big':
@@ -720,11 +727,11 @@ def callback(call):
          
 
         elif call.data == 'back_btn_men':
-            bot.send_message(cht, 'Ви обрали чоловічі товари', reply_markup=men_goods())
+            bot.send_message(cht, 'Вами було обрано «🙋🏻‍♂️Чоловічі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=men_goods())
         elif call.data == 'home_btn_men':
-            bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.send_message(cht, 'Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
         elif call.data == 'back_btn_women':
-            bot.send_message(cht, 'Ви обрали жіночі товари', reply_markup=women_goods())
+            bot.send_message(cht, 'Вами було обрано «🙋🏻‍♀️Жіночі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=women_goods())
 
         # elif call.data == 'back_btn_women':
         #     bot.send_message(cht, 'Сумки:', reply_markup=bags())
@@ -732,19 +739,51 @@ def callback(call):
         # elif call.data == 'back_btn_women':
         #     women_goods(call=call)
         elif call.data == 'home_btn_women':
-            bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.send_message(cht, 'Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
 
 
 
 
         elif call.data == 'q1':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Перше питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text="""1. Оберіть товар, який бажаєте замовити, та натисніть «🛒» для відкриття картки товару
+2. Замовлення - Залишаєте заявку на нашому сайті
+3. Дзвінок - Наш менеджер уточнює деталі замовлення
+4. Відправка - Доставляємо товар протягом 1-3 днів
+5. Отримання - Оплачуєте при отриманні на пошті.""",
+                                  reply_markup=help_buttonts())
         elif call.data == 'q2':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Друге питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text="""Оплата за товар може бути наступною:
+Наложений платіж - після огляду товару на пошті.
+Передоплата - оплачуєте наперід. В разі відмови, ми повернемо Вам кошти.""",
+                                  reply_markup=help_buttonts())
         elif call.data == 'q3':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Третє питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text="""Товар доставляється Вам протягом 1-3 днів в залежності від поштового перевізника якого Ви обрали (Нова Пошта - швидко; Укрпошта - дешево)""",
+                                  reply_markup=help_buttonts())
         elif call.data == 'q4':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Четверте питання', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id,
+                                  text="""Компанія здійснює повернення і обмін товарів належної якості згідно Закону <a href='https://zakon.rada.gov.ua/laws/show/1023-12#Text'>«Про захист прав споживачів»</a>.
+
+Строки повернення і обміну
+Повернення та обмін товарів можливий протягом 14 днів після отримання товару покупцем.
+
+Зворотня доставка товарів здійснюється за домовленістю.
+
+Умови повернення для товарів належної якості
+
+Товари магазину 6bags підлягають обміну у разі незадоволеності клієнта покупкою. 
+Для оформлення обміну ви повинні протягом 14 днів після покупки зв'язатися з магазином за телефоном 380501419080, повідомити та надіслати товар до магазину. 
+Обмін товару здійснюється Новою поштою або Укрпоштою з оплатою поштових послуг за рахунок відправника. Новий товар з обміну надсилається клієнту наступного дня після отримання товару магазином через пошту. 
+
+Товари магазину 6bags підлягають поверненню, у разі незадоволеності клієнта покупкою. 
+Для оформлення повернення ви повинні протягом 14 днів після покупки зв'язатися з магазином за телефоном 380501419080, повідомити та надіслати товар до магазину. 
+Повернення товару здійснюється Новою поштою або Укрпоштою з оплатою поштових послуг за рахунок відправника. Повернення грошей здійснюється на картку клієнта наступного дня після отримання товару магазином через пошту.
+
+Відповідно закону <a href='https://zakon.rada.gov.ua/laws/show/1023-12#Text'>«Про захист прав споживачів»</a>, компанія може відмовити споживачеві в обміні та поверненні товарів належної якості, якщо вони відносяться до категорій, зазначених у чинному <a href='https://zakon.rada.gov.ua/laws/show/172-94-%D0%BF#Text'>Переліку непродовольчих товарів належної якості, що не підлягають поверненню та обміну</a>.""",
+                                  reply_markup=help_buttonts(),
+                                  parse_mode='HTML')
         elif call.data == 'help_specialist':
             global phone
 
@@ -756,13 +795,21 @@ def callback(call):
 
         # Ці блоки elif відокремлені, бо тут ціла система повернень назад :)
         elif call.data == 'back':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
         elif call.data == 'back_bags':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Ви обрали жіночі товари', reply_markup=women_goods())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вами було обрано «🙋🏻‍♀️Жіночі товари», який товар Вас цікавить?\nОберіть категорію:', reply_markup=women_goods())
         elif call.data == 'home':
-            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
         elif call.data == 'home2':
-            bot.send_message(cht, 'Вітаю! Це магазин ляляля\nОбери дію', reply_markup=start_buttons())
+            bot.send_message(cht, 'Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
+
+        elif call.data == 'help_back':
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Скористайтесь питаннями або задайте власне нашому менеджеру', reply_markup=help())
+        elif call.data == 'help_home':
+            bot.edit_message_text(chat_id=cht, message_id=call.message.message_id, text='Вітаємо у магазині 6bags\nДля навігації по магазину, оберіть категорію:', reply_markup=start_buttons())
+
+
+
 # обробник тексту
 @bot.message_handler(content_types=['contact'])
 def text(message):

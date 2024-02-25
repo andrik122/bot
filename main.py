@@ -119,7 +119,7 @@ def answer_handler(message: str) -> None:
 
     _id = message.text
 
-    msg = bot.send_message(cht, 'write answer/send photo:')
+    msg = bot.send_message(cht, 'write answer/send photo/video:')
     bot.register_next_step_handler(msg, answer_send)
 
 def answer_send(message: str) -> None:
@@ -147,6 +147,21 @@ def answer_send(message: str) -> None:
             bot.send_photo(_id, file_id, caption=caption, reply_markup=help_one_more())
         except Exception as ex:
             bot.send_message(cht, f'Помилка надсилання фото\n{ex}')
+            
+    if message.video:
+        if message.caption:
+            caption = message.caption
+        else:
+            caption = ''
+            
+        file_id = message.video.file_id
+        try:
+            bot.send_message(cht, f'Відповідь надіслано користувачу')
+            bot.send_message(_id, f'Вам надішла відповідь від менеджера:')
+            bot.send_video(_id, file_id, caption=caption, reply_markup=help_one_more())
+        except Exception as ex:
+            bot.send_message(cht, f'Помилка надсилання відео\n{ex}')
+
 
 
 def discount1(message):

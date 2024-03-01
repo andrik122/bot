@@ -107,11 +107,55 @@ def help_one_more() -> types.InlineKeyboardMarkup:
     markup.add(home, help)
     return markup
 
-def q_handler(message: str) -> None:
+# def q_handler(message: str) -> None:
+#     cht = message.chat.id
+
+#     bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️', reply_markup=start_buttons())
+#     bot.send_message(163616716, f'id: <b>{cht}</b>\nname: {message.from_user.first_name} {message.from_user.last_name}\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>\n/answer', parse_mode='HTML')
+
+def q_handler(message):
     cht = message.chat.id
 
-    bot.send_message(cht, 'Менеджер вже поспішає надати відповідь ⌛️\nА поки, можете переглянути наші товари ☺️', reply_markup=start_buttons())
-    bot.send_message(163616716, f'id: <b>{cht}</b>\nusername: <b>@{message.from_user.username}</b>\nphone: <b>{phone}</b>\nquestion: <b>{message.text}</b>', parse_mode='HTML')
+    # Відправлення фото разом з інформацією про користувача
+    if message.photo:
+        photo_id = message.photo[-1].file_id  # Беремо ID останнього (найбільшого за розміром) фото
+        caption = message.caption if message.caption else ''  # Перевіряємо, чи є підпис у фото
+        bot.send_photo(163616716, photo_id,
+                    caption=f'id: <b>{cht}</b>\n'
+                            f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
+                            f'username: <b>@{message.from_user.username}</b>\n'
+                            f'phone: <b>{phone}</b>\n'
+                            f'question: <b>{caption}</b>\n'
+                            f'/answer', parse_mode='HTML')
+
+    # Відправлення відео разом з інформацією про користувача
+    elif message.video:
+        video_id = message.video.file_id
+        caption = message.caption if message.caption else ''  # Перевіряємо, чи є підпис до відео
+        bot.send_video(163616716, video_id,
+                    caption=f'id: <b>{cht}</b>\n'
+                            f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
+                            f'username: <b>@{message.from_user.username}</b>\n'
+                            f'phone: <b>{phone}</b>\n'
+                            f'question: <b>{caption}</b>\n'
+                            f'/answer', parse_mode='HTML')
+    # Відправлення голосового повідомлення разом з інформацією про користувача
+    elif message.voice:
+        voice_id = message.voice.file_id
+        bot.send_voice(163616716, voice_id,
+                       caption=f'id: <b>{cht}</b>\n'
+                               f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
+                               f'username: <b>@{message.from_user.username}</b>\n'
+                               f'phone: <b>{phone}</b>\n'
+                               f'question: <b>{message.text}</b>\n'
+                               f'/answer', parse_mode='HTML')
+    else:
+        bot.send_message(163616716, f'id: <b>{cht}</b>\n'
+                                     f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
+                                     f'username: <b>@{message.from_user.username}</b>\n'
+                                     f'phone: <b>{phone}</b>\n'
+                                     f'question: <b>{message.text}</b>\n'
+                                     f'/answer', parse_mode='HTML')
 
 def answer_handler(message: str) -> None:
     cht = message.chat.id
@@ -130,7 +174,7 @@ def answer_send(message: str) -> None:
         _answer = message.text
         try:
             bot.send_message(cht, f'Відповідь надіслано користувачу')
-            bot.send_message(_id, f'Вам надішла відповідь від менеджера:\n<b><i>{_answer}</i></b>', parse_mode='HTML', reply_markup=help_one_more())
+            bot.send_message(_id, f'✉️ Відповідь від менеджера вже тут!\nЗ радістю надаємо Вам відповідь від менеджера:\n<blockquote><b>{_answer}</b></blockquote>', parse_mode='HTML', reply_markup=help_one_more())
         except Exception as ex:
             bot.send_message(cht, f'Помилка\n{ex}')
             
@@ -143,7 +187,7 @@ def answer_send(message: str) -> None:
         file_id = message.photo[-1].file_id
         try:
             bot.send_message(cht, f'Відповідь надіслано користувачу')
-            bot.send_message(_id, f'Вам надішла відповідь від менеджера:')
+            bot.send_message(_id, f'✉️ Відповідь від менеджера вже тут!\nЗ радістю надаємо Вам відповідь від менеджера:')
             bot.send_photo(_id, file_id, caption=caption, reply_markup=help_one_more())
         except Exception as ex:
             bot.send_message(cht, f'Помилка надсилання фото\n{ex}')
@@ -157,7 +201,7 @@ def answer_send(message: str) -> None:
         file_id = message.video.file_id
         try:
             bot.send_message(cht, f'Відповідь надіслано користувачу')
-            bot.send_message(_id, f'Вам надішла відповідь від менеджера:')
+            bot.send_message(_id, f'✉️ Відповідь від менеджера вже тут!\nЗ радістю надаємо Вам відповідь від менеджера:')
             bot.send_video(_id, file_id, caption=caption, reply_markup=help_one_more())
         except Exception as ex:
             bot.send_message(cht, f'Помилка надсилання відео\n{ex}')
@@ -260,8 +304,8 @@ def discount4(message, sex, group, item):
             for i in ids:
                 bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
                                                 caption=f'<b>{name_}</b>\n' +
-                                                f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
-                                                f'{description}',
+                                                f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n' +
+                                                f'<blockquote>{description}</blockquote>',
                                                 reply_markup=markup,
                                                 parse_mode='HTML')
 
@@ -293,8 +337,8 @@ def own_text(message, sex, group, item):
             bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
                                             caption = f'{message.text}\n\n' +
                                             f'<b>{name_}</b>\n' +
-                                            f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
-                                            f'{description}',
+                                            f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n' +
+                                            f'<blockquote>{description}</blockquote>',
                                             reply_markup=markup,
                                             parse_mode='HTML')
 
@@ -327,7 +371,7 @@ def own_text(message, sex, group, item):
 #             bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
 #                                         caption=f'⚠️ <b>{name_}</b>\n' +
 #                                         f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
-#                                         f'{description}',
+#                                         <blockquote>{description}</blockquote>',
 #                                         reply_markup=markup,
 #                                         parse_mode='HTML')
 #     except Exception as ex:
@@ -372,9 +416,9 @@ def jacket_show(call):
 
         caption = f'<b>{t}</b>\n'
         if old_price == new_price:
-            caption += f'{description}\n{new_price}'
+            caption += f'<blockquote>{description}</blockquote>\n{new_price}'
         else:
-            caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+            caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
 
         bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                        caption=caption,
@@ -417,9 +461,9 @@ def pants_show(call):
 
             caption = f'<b>{t}</b>\n'
             if old_price == new_price:
-                caption += f'{description}\n{new_price}'
+                caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}'
+                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -464,12 +508,12 @@ def accessories_men(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n{description}{new_price}',
+                           caption=f'<b>{t}</b><blockquote>{description}</blockquote>{new_price}',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -509,12 +553,12 @@ def big_bags(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -554,12 +598,12 @@ def small_bags(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -599,12 +643,12 @@ def backpack(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n\n{description}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -644,12 +688,12 @@ def accessories_women(call):
 
         if old_price == new_price:    
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n{description}\n<b>₴{new_price}</b>',
+                           caption=f'<b>{t}</b><blockquote>{description}</blockquote>\n<b>₴{new_price}</b>',
                            reply_markup=markup,
                            parse_mode='HTML')
         else:
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
-                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n{description}',
+                           caption=f'<b>{t}</b>\n<s><i>₴{old_price}</i></s> <b>₴{new_price}</b><blockquote>{description}</blockquote>',
                            reply_markup=markup,
                            parse_mode='HTML')
     f.close()
@@ -835,7 +879,7 @@ def text(message):
         phone = message.contact.phone_number
 
         keyboard = types.ReplyKeyboardRemove()
-        msg = bot.send_message(cht, 'Поставте питання', reply_markup=keyboard)
+        msg = bot.send_message(cht, 'Надішліть питання', reply_markup=keyboard)
 
         bot.register_next_step_handler(msg, q_handler)
 

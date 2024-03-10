@@ -90,7 +90,7 @@ def get_data():
             description = ''
 
             for i in range(len(description_title)):
-                description += f'{description_title[i].text.encode('latin1').decode('utf-8')} {description_text[i].text.encode('latin1').decode('utf-8')}\n'
+                description += f"{description_title[i].text.encode('latin1').decode('utf-8')} {description_text[i].text.encode('latin1').decode('utf-8')}\n"
 
             name = sites[s]['name']
             data[name]['oldprice'] = old_price

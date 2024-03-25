@@ -4,53 +4,53 @@
 			"big.bags": {
 				"Джорна": {
 					"description": "\nМатеріал:Натуральна шкіра\nРозміри:37см 19см 30см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Темно-Синя, Коричнева, Сіра",
-					"oldprice": "897",
+					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://jorna.6bags.space/",
+					"url": "https://tg.6bags.space/jorna/",
 					"image_path": "images/women/bags/big.bags/jorna.jpg"
 				},
 				"Гранада": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:36см 14см 28см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Темно-Синя, Пурпурова, Сіра",
-					"oldprice": "897",
+					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://granada.6bags.space/",
+					"url": "https://tg.6bags.space/granada/",
 					"image_path": "images/women/bags/big.bags/granada.jpg"
 				},
 				"Сельта": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:42см 14см 31см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Темно-Синя, Пурпурова, Сіра",
-					"oldprice": "897",
+					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://selta.6bags.space/",
+					"url": "https://tg.6bags.space/selta/",
 					"image_path": "images/women/bags/big.bags/selta.jpg"
 				}
 			},
 			"small.bags": {
 				"Бетіс": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:30см 13см 22см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Темно-Синя, Пурпурова, Коричнева",
-					"oldprice": "897",
-					"newprice": "897",
-					"url": "https://betis.6bags.space/",
+					"oldprice": "1800",
+					"newprice": "789",
+					"url": "https://tg.6bags.space/betis/",
 					"image_path": "images/women/bags/small.bags/betis.jpg"
 				},
 				"Ельче": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:24см 11см 17см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Темно-Синя, Коричнева, Пурпурова, Сіра",
-					"oldprice": "897",
-					"newprice": "897",
-					"url": "https://elche.6bags.space/",
+					"oldprice": "1800",
+					"newprice": "789",
+					"url": "https://tg.6bags.space/elche/",
 					"image_path": "images/women/bags/small.bags/elche.jpg"
 				},
 				"Жирона": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:21см 10см 17см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Коричнева",
-					"oldprice": "897",
+					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://girona.6bags.space/",
+					"url": "https://tg.6bags.space/girona/",
 					"image_path": "images/women/bags/small.bags/girona.jpg"
 				},
 				"Лоренс": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:21см 10см 17см\nЗастібка:блискавка\nКольори: Чорна, Бордова, Коричнева",
-					"oldprice": "897",
+					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://lorens.6bags.space/",
+					"url": "https://tg.6bags.space/lorens/",
 					"image_path": "images/women/bags/small.bags/lorens.gif"
 				}
 			},
@@ -59,21 +59,21 @@
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:33см 25см 10см\nЗастібка:блискавка\nКольори: Бордовий, Пурпуровий, Синій",
 					"oldprice": "1600",
 					"newprice": "797",
-					"url": "https://kangaroo.6bags.space/",
+					"url": "https://tg.6bags.space/kangaroo/",
 					"image_path": "images/women/backpack/kangaroo.jpg"
 				},
 				"Альба": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:33см 26см 10см\nЗастібка:блискавка\nКольори: Чорний, Бордовий, Темно-Синій, Пурпуровий, Сірий",
 					"oldprice": "1800",
 					"newprice": "897",
-					"url": "https://alba.6bags.space/",
+					"url": "https://tg.6bags.space/alba/",
 					"image_path": "images/women/backpack/alba.jpg"
 				},
 				"Верона": {
 					"description": "Виробник:Польща\nМатеріал:Натуральна шкіра\nРозміри:34см 30см 15см\nЗастібка:блискавка\nКольори: Чорний, Бордовий, Синій, Пурпурний",
 					"oldprice": "1800",
 					"newprice": "799",
-					"url": "https://verona.6bags.space/",
+					"url": "https://tg.6bags.space/verona/",
 					"image_path": "images/women/backpack/verona.jpg"
 				}
 			},
@@ -82,28 +82,28 @@
 					"description": "Опис",
 					"oldprice": "222",
 					"newprice": "333",
-					"url": "https://baellery.6bags.space/",
+					"url": "https://tg.6bags.space/beallery/",
 					"image_path": "images/women/accessories_women/beallery.jpg"
 				},
 				"Бейлері міні": {
 					"description": "Опис",
 					"oldprice": "222",
 					"newprice": "333",
-					"url": "https://baellery-mini.6bags.space/",
+					"url": "https://tg.6bags.space/beallery-mini/",
 					"image_path": "images/women/accessories_women/beallery-mini.jpg"
 				},
 				"Сімпл": {
 					"description": "Опис",
 					"oldprice": "222",
 					"newprice": "333",
-					"url": "https://simpl.6bags.space/",
+					"url": "https://tg.6bags.space/simpl/",
 					"image_path": "images/women/accessories_women/simpl.jpg"
 				},
 				"Бейлері Італія": {
 					"description": "Опис",
-					"oldprice": "222",
-					"newprice": "333",
-					"url": "https://baellery-italli.6bags.space/",
+					"oldprice": "400",
+					"newprice": "269",
+					"url": "https://tg.6bags.space/beallery-italy/",
 					"image_path": "images/women/accessories_women/beallery-italli.jpg"
 				}
 			}
@@ -114,14 +114,14 @@
 					"description": "Матеріал: Soft-Shell\nСезон: Осінь-Весна\n(до +5 градусів)\nРозмір: Від S до 4XL\nКольори: Чорний, Олива, Пісок",
 					"oldprice": "1900",
 					"newprice": "1299",
-					"url": "https://tik-tak.6bags.space/",
+					"url": "https://tg.6bags.space/jacket/",
 					"image_path": "images/men/jacket/jacket.gif"
 				},
 				"Куртка зимова": {
 					"description": "Зовнішній шар: бавовна 65%, поліестер 35%\nНаповнювач: 100% поліестер\nУтеплювач 260г/м2 бавовна\nПідкладка: поліестер із сріблястим алюмінізірованим термовідбивним шаром\nСезон: Зима (До -15 градусів)\nРозмір: Від S до 4XL\nКольори: Чорний, Олива, Піксель",
 					"oldprice": "2700",
 					"newprice": "1747",
-					"url": "https://winter-jacket.6bags.space/",
+					"url": "https://tg.6bags.space/winter-jacket/",
 					"image_path": "images/men/jacket/winter-jacket.gif"
 				}
 			},
@@ -130,7 +130,7 @@
 					"description": "Матеріал: Soft-Shell\nСезон: Осінь-Весна\n(до 0 градусів)\nРозмір: Від S до 4XL\nКольори: Чорний, Олива",
 					"oldprice": "1400",
 					"newprice": "899",
-					"url": "https://pants.6bags.space/",
+					"url": "https://tg.6bags.space/pants/",
 					"image_path": "images/men/pants/pants.gif"
 				}
 			},
@@ -139,49 +139,49 @@
 					"description": "Міцні ремені з металевою пряжкою кобра\nКольори: Чорний, Олива, Пісок",
 					"oldprice": "430",
 					"newprice": "299",
-					"url": "https://belt.6bags.space/",
+					"url": "https://tg.6bags.space/belt/",
 					"image_path": "images/men/accessories_men/belt.jpg"
 				},
 				"Кепка": {
 					"description": "Кепка з місцем під шеврон\nКольори: Чорний, Олива, Піксель",
 					"oldprice": "330",
 					"newprice": "199",
-					"url": "https://cap.6bags.space/",
+					"url": "https://tg.6bags.space/cap/",
 					"image_path": "images/men/accessories_men/cap.jpg"
 				},
 				"Рукавиці відкриті": {
 					"description": "Тактичні рукавиці з відкритими пальцями\nКольори: Чорний, Олива\nРозмір: Від M до 2XL",
 					"oldprice": "360",
 					"newprice": "249",
-					"url": "https://open-gloves.6bags.space",
+					"url": "https://tg.6bags.space/open-gloves/",
 					"image_path": "images/men/accessories_men/open-gloves.jpg"
 				},
 				"Рукавиці закриті": {
 					"description": "Тактичні рукавиці з закритими пальцями\nКольори: Чорний, Олива\nРозмір: Від M до 2XL",
 					"oldprice": "430",
 					"newprice": "299",
-					"url": "https://close-gloves.6bags.space",
+					"url": "https://tg.6bags.space/close-gloves/",
 					"image_path": "images/men/accessories_men/close-gloves.jpg"
 				},
 				"Комплект Наколінники+Налокітники": {
 					"description": "Якісний захист на швидкозйомах\nКольори: Чорний, Олива\nРозмір: регулюється кріпленням",
 					"oldprice": "500",
 					"newprice": "399",
-					"url": "https://knee-pads.6bags.space",
+					"url": "https://tg.6bags.space/knee-pads/",
 					"image_path": "images/men/accessories_men/knee-pads.jpg"
 				},
 				"Гаманець шкіряний чоловічий Бейлері Італія": {
 					"description": "Опис",
-					"oldprice": "222",
-					"newprice": "333",
-					"url": "https://baellery-italli.6bags.space/",
+					"oldprice": "400",
+					"newprice": "269",
+					"url": "https://tg.6bags.space/beallery-italy/",
 					"image_path": "images/men/accessories_men/beallery-italli.jpg"
 				},
 				"Гаманець шкіряний чоловічий міні": {
 					"description": "Опис",
-					"oldprice": "222",
-					"newprice": "333",
-					"url": "https://wallet-mini.6bags.space/",
+					"oldprice": "400",
+					"newprice": "295",
+					"url": "https://tg.6bags.space/wallet-mini/",
 					"image_path": "images/men/accessories_men/wallet-mini.jpg"
 				}
 			}

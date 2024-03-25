@@ -3,7 +3,7 @@ from telebot import types
 import pymysql
 import os
 import json
-from price import get_data
+# from price import get_data
 
 from config import TOKEN, HOST, USER, PASSWORD, PORT, DATABASE
 
@@ -26,13 +26,13 @@ _answer = None
 current_index1 = 0
 current_index2 = 0
 
-@bot.message_handler(commands=['update'])
-def update(message: str) -> None:
-    if message.chat.id != 163616716:
-        bot.send_message(message.chat.id, 'У Вас недостатньо повноважень для застосування цієї команди')
-    else:
-        get_data()
-        bot.send_message(message.chat.id, 'Ціни оновлено успішно')
+# @bot.message_handler(commands=['update'])
+# def update(message: str) -> None:
+#     if message.chat.id != 163616716:
+#         bot.send_message(message.chat.id, 'У Вас недостатньо повноважень для застосування цієї команди')
+#     else:
+#         get_data()
+#         bot.send_message(message.chat.id, 'Ціни оновлено успішно')
 
 def start_buttons() -> types.InlineKeyboardMarkup:
     """
@@ -306,7 +306,7 @@ def discount4(message, sex, group, item):
             for i in ids:
                 bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
                                                 caption=f'<b>{name_}</b>\n' +
-                                                f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n' +
+                                                f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n' +
                                                 f'<blockquote>{description}</blockquote>',
                                                 reply_markup=markup,
                                                 parse_mode='HTML')
@@ -339,7 +339,7 @@ def own_text(message, sex, group, item):
             bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
                                             caption = f'{message.text}\n\n' +
                                             f'<b>{name_}</b>\n' +
-                                            f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n' +
+                                            f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n' +
                                             f'<blockquote>{description}</blockquote>',
                                             reply_markup=markup,
                                             parse_mode='HTML')
@@ -372,7 +372,7 @@ def own_text(message, sex, group, item):
 #         for i in data[0]:
 #             bot.send_photo(i[0], open(os.path.join(image_path), 'rb'),
 #                                         caption=f'⚠️ <b>{name_}</b>\n' +
-#                                         f'<s><i>{old_price}</i></s> <b>{new_price}</b>\n\n' +
+#                                         f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n\n' +
 #                                         <blockquote>{description}</blockquote>',
 #                                         reply_markup=markup,
 #                                         parse_mode='HTML')
@@ -425,7 +425,7 @@ def jacket_show(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -475,7 +475,7 @@ def pants_show(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -524,7 +524,7 @@ def accessories_men(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -574,7 +574,7 @@ def big_bags(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -624,7 +624,7 @@ def small_bags(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -649,7 +649,7 @@ def backpack(call):
 
             if call.data == 'bb':
                 current_index1 = (current_index1 - 1) % len(item_list)
-            elif call.data == 'nb':
+            elif call.data == 'bn':
                 current_index1 = (current_index1 + 1) % len(item_list)
 
             t = item_list[current_index1]
@@ -659,7 +659,7 @@ def backpack(call):
             back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
             home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
             back_item = types.InlineKeyboardButton('◀️', callback_data='bb')
-            next_btn = types.InlineKeyboardButton('▶️', callback_data='nb')
+            next_btn = types.InlineKeyboardButton('▶️', callback_data='bn')
             url = types.InlineKeyboardButton('🛒', url=data['items'][category][item_type][t]['url'])
             markup.add(back_item, url, next_btn)
             markup.add(back, home)
@@ -673,7 +673,7 @@ def backpack(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,
@@ -723,7 +723,7 @@ def accessories_women(call):
             if old_price == new_price:
                 caption += f'<blockquote>{description}</blockquote>\n{new_price}'
             else:
-                caption += f'<s><i>₴{old_price}</i></s> <b>₴{new_price}</b>\n<blockquote>{description}</blockquote>'
+                caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
             bot.send_photo(call.message.chat.id, open(os.path.join(image_path), 'rb'),
                            caption=caption,

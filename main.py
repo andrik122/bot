@@ -5,7 +5,7 @@ import os
 import json
 # from price import get_data
 
-from config import TOKEN, HOST, USER, PASSWORD, PORT, DATABASE
+from config import TOKEN, HOST, USER, PASSWORD, DATABASE
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -13,7 +13,6 @@ connection = pymysql.connect(
     host=HOST,
     user=USER,
     password=PASSWORD,
-    port=PORT,
     database=DATABASE
 )
 cursor = connection.cursor()
@@ -28,7 +27,7 @@ current_index2 = 0
 
 # @bot.message_handler(commands=['update'])
 # def update(message: str) -> None:
-#     if message.chat.id != 163616716:
+#     if message.chat.id != 1001173176:
 #         bot.send_message(message.chat.id, 'У Вас недостатньо повноважень для застосування цієї команди')
 #     else:
 #         get_data()
@@ -123,41 +122,45 @@ def q_handler(message):
     if message.photo:
         photo_id = message.photo[-1].file_id
         caption = message.caption if message.caption else ''
-        bot.send_photo(163616716, photo_id,
+        bot.send_photo(1001173176, photo_id,
                     caption=f'id: <b>{cht}</b>\n'
                             f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
                             f'username: <b>@{message.from_user.username}</b>\n'
                             f'phone: <b>{phone}</b>\n'
                             f'question: <b>{caption}</b>\n'
                             f'/answer', parse_mode='HTML')
+        bot.send_message(cht, 'Ваше питання передано менеджеру ☺️')
 
     elif message.video:
         video_id = message.video.file_id
         caption = message.caption if message.caption else ''
-        bot.send_video(163616716, video_id,
+        bot.send_video(1001173176, video_id,
                     caption=f'id: <b>{cht}</b>\n'
                             f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
                             f'username: <b>@{message.from_user.username}</b>\n'
                             f'phone: <b>{phone}</b>\n'
                             f'question: <b>{caption}</b>\n'
                             f'/answer', parse_mode='HTML')
+        bot.send_message(cht, 'Ваше питання передано менеджеру ☺️')
 
     elif message.voice:
         voice_id = message.voice.file_id
-        bot.send_voice(163616716, voice_id,
+        bot.send_voice(1001173176, voice_id,
                        caption=f'id: <b>{cht}</b>\n'
                                f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
                                f'username: <b>@{message.from_user.username}</b>\n'
                                f'phone: <b>{phone}</b>\n'
                                f'question: <b>{message.text}</b>\n'
                                f'/answer', parse_mode='HTML')
+        bot.send_message(cht, 'Ваше питання передано менеджеру ☺️')
     else:
-        bot.send_message(163616716, f'id: <b>{cht}</b>\n'
+        bot.send_message(1001173176, f'id: <b>{cht}</b>\n'
                                      f'name: {message.from_user.first_name} {message.from_user.last_name}\n'
                                      f'username: <b>@{message.from_user.username}</b>\n'
                                      f'phone: <b>{phone}</b>\n'
                                      f'question: <b>{message.text}</b>\n'
                                      f'/answer', parse_mode='HTML')
+        bot.send_message(cht, 'Ваше питання передано менеджеру ☺️')
 
 def answer_handler(message: str) -> None:
     cht = message.chat.id
@@ -423,7 +426,7 @@ def jacket_show(call):
 
             caption = f'<b>{t}</b>\n'
             if old_price == new_price:
-                caption += f'<blockquote>{description}</blockquote>\n{new_price}'
+                caption += f'<b>{new_price} грн</b>\n<blockquote>{description}</blockquote>{new_price}'
             else:
                 caption += f'<s><i>{old_price} грн</i></s> <b>{new_price} грн</b>\n<blockquote>{description}</blockquote>'
 
@@ -557,8 +560,8 @@ def big_bags(call):
 
             markup = types.InlineKeyboardMarkup(row_width=3)
 
-            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
             back_item = types.InlineKeyboardButton('◀️', callback_data='bbb')
             next_btn = types.InlineKeyboardButton('▶️', callback_data='bbn')
             url = types.InlineKeyboardButton('🛒', url=data['items'][category][item_type][t]['url'])
@@ -607,8 +610,8 @@ def small_bags(call):
 
             markup = types.InlineKeyboardMarkup(row_width=3)
 
-            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
             back_item = types.InlineKeyboardButton('◀️', callback_data='sbb')
             next_btn = types.InlineKeyboardButton('▶️', callback_data='sbn')
             url = types.InlineKeyboardButton('🛒', url=data['items'][category][item_type][t]['url'])
@@ -656,8 +659,8 @@ def backpack(call):
 
             markup = types.InlineKeyboardMarkup(row_width=3)
 
-            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
             back_item = types.InlineKeyboardButton('◀️', callback_data='bb')
             next_btn = types.InlineKeyboardButton('▶️', callback_data='bn')
             url = types.InlineKeyboardButton('🛒', url=data['items'][category][item_type][t]['url'])
@@ -706,8 +709,8 @@ def accessories_women(call):
 
             markup = types.InlineKeyboardMarkup(row_width=3)
 
-            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_men')
-            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_men')
+            back = types.InlineKeyboardButton('◀️ Назад', callback_data='back_btn_women')
+            home = types.InlineKeyboardButton('⏪ Головне меню', callback_data='home_btn_women')
             back_item = types.InlineKeyboardButton('◀️', callback_data='awb')
             next_btn = types.InlineKeyboardButton('▶️', callback_data='awn')
             url = types.InlineKeyboardButton('🛒', url=data['items'][category][item_type][t]['url'])
@@ -760,7 +763,7 @@ def start(message: str) -> None:
 def answer(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716:
+    if cht != 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування цієї команди')
     else:
         msg = bot.send_message(cht, 'id:')
@@ -776,7 +779,7 @@ def goods_list(message: str) -> None:
 def discount_(message: str) -> None:
     cht = message.chat.id
 
-    if cht != 163616716:
+    if cht != 1001173176:
         bot.send_message(cht, 'У Вас недостатньо повноважень для застосування цієї команди')
     else:
         items = ''
